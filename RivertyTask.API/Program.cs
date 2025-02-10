@@ -1,4 +1,5 @@
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.OpenApi.Models;
 using RivertyTask.API.Models;
 using RivertyTask.API.Services;
@@ -17,13 +18,11 @@ builder.Services.AddSwaggerGen(c =>
     c.SwaggerDoc("v1", new OpenApiInfo { Title = "RivertyTask.API", Version = "v1" });
 });
 
+ConfigurationManager Configuration = builder.Configuration;
+Configuration.AddUserSecrets<Secrets>();
+
 builder.Services.AddScoped<ICurrencyExchangeService, CurrencyExchangeService>();
 builder.Services.AddScoped<IDatabaseService, DatabaseService>();
-
-ConfigurationManager Configuration = builder.Configuration;
-
-builder.Services.Configure<Settings>(Configuration.GetSection("AppSettings"));
-Configuration.AddUserSecrets<Program>();
 
 var app = builder.Build();
 
