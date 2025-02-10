@@ -5,6 +5,8 @@ using RivertyTask.API.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
+
+
 // Add services to the container.
 builder.Services.AddEndpointsApiExplorer();
 
@@ -16,9 +18,12 @@ builder.Services.AddSwaggerGen(c =>
 });
 
 builder.Services.AddScoped<ICurrencyExchangeService, CurrencyExchangeService>();
+builder.Services.AddScoped<IDatabaseService, DatabaseService>();
 
 ConfigurationManager Configuration = builder.Configuration;
+
 builder.Services.Configure<Settings>(Configuration.GetSection("AppSettings"));
+Configuration.AddUserSecrets<Program>();
 
 var app = builder.Build();
 
@@ -27,6 +32,7 @@ if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "RivertyTask.API V1"));
+    
 }
 else
 {
