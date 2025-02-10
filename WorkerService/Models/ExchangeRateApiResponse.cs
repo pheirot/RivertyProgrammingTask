@@ -1,0 +1,11 @@
+﻿public partial class ExchangeRateService
+{
+    public class ExchangeRateApiResponse
+    {
+        public bool Success { get; set; }
+        public long Timestamp { get; set; }
+        public string Base { get; set; }
+        public string Date { get; set; }
+        public Dictionary<string, decimal> Rates { get; set; }
+    }
+}
