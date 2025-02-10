@@ -16,6 +16,7 @@ builder.Services.AddSwaggerGen(c =>
 });
 
 builder.Services.AddScoped<ICurrencyExchangeService, CurrencyExchangeService>();
+builder.Services.AddScoped<IDatabaseService, DatabaseService>();
 
 ConfigurationManager Configuration = builder.Configuration;
 builder.Services.Configure<Settings>(Configuration.GetSection("AppSettings"));
