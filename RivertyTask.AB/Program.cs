@@ -6,8 +6,9 @@ using System.Net.Http.Json;
 class Program
 {
     private static IConfiguration _config;
-    private static readonly string _urlLatest = "http://data.fixer.io/api/latest";
-    private static readonly string _urlDate = "http://data.fixer.io/api/";
+
+    private static readonly string _urlLatest = "http://data.fixer.io/api/latest"; //TODO: move to appsettings.json ?
+    private static readonly string _urlDate = "http://data.fixer.io/api/"; //TODO: move to appsettings.json ?
 
     static async Task Main(string[] args)
     {
