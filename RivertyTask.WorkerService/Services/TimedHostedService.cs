@@ -1,4 +1,6 @@
-﻿namespace WorkerService.Services
+﻿using WorkerService.Data;
+
+namespace WorkerService.Services
 {
     public class TimedHostedService : BackgroundService
     {
@@ -49,13 +51,25 @@
 
             var currenciesList = string.Join(", ", _currencies);
 
-            foreach (var currency in _currencies)
-            {
-                var exchangeRates = await _exchangeRateService.GetExchangeRateAsync(_baseCurrency, currenciesList);
-                //TODO: Add Check response from exchangeRateService
+            var exchangeRates = await _exchangeRateService.GetExchangeRateAsync(_baseCurrency, currenciesList);
+            //TODO: Add Check response from exchangeRateService
 
-                await _databaseService.SaveExchangeRateAsync(exchangeRates);
+            var exchangeRatesList = new List<ExchangeRate>();
+
+            //Mapping the response to ExchangeRate model
+            foreach (var rate in exchangeRates.Rates)
+            {
+                var exchangeRate = new ExchangeRate
+                {
+                    CurrencyFrom = exchangeRates.Base,
+                    CurrencyTo = rate.Key,
+                    Rate = rate.Value,
+                    Timestamp = DateTime.Now
+                };
+                exchangeRatesList.Add(exchangeRate);
             }
+
+            await _databaseService.SaveExchangeRateAsync(exchangeRatesList);
         }
     }
 }

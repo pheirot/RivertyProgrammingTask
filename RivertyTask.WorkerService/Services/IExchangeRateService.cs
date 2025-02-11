@@ -1,6 +1,7 @@
 ﻿using WorkerService.Data;
+using static ExchangeRateService;
 
 public interface IExchangeRateService
 {
-    Task<ExchangeRate> GetExchangeRateAsync(string fromCurrency, string toCurrency);
+    Task<ExchangeRateApiResponse> GetExchangeRateAsync(string fromCurrency, string toCurrency);
 }

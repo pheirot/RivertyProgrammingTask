@@ -2,5 +2,5 @@
 
 public interface IDatabaseService
 {
-    Task SaveExchangeRateAsync(ExchangeRate exchangeRate);
+    Task SaveExchangeRateAsync(IEnumerable<ExchangeRate> exchangeRates);
 }

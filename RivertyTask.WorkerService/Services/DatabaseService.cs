@@ -1,14 +1,15 @@
-﻿using WorkerService.Data;
+﻿using Microsoft.IdentityModel.Tokens;
+using WorkerService.Data;
 
 public class DatabaseService : IDatabaseService
 {
-    public async Task SaveExchangeRateAsync(ExchangeRate exchangeRate)
+    public async Task SaveExchangeRateAsync(IEnumerable<ExchangeRate> exchangeRates)
     {
-        if (exchangeRate != null)
+        if (!exchangeRates.IsNullOrEmpty())
         {
             using (var context = new ExchangeRateDbContext())
             {
-                context.ExchangeRates.Add(exchangeRate);
+                context.ExchangeRates.AddRange(exchangeRates);
                 await context.SaveChangesAsync();
             }
         }

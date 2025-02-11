@@ -7,7 +7,7 @@ public partial class ExchangeRateService : IExchangeRateService
     private static readonly HttpClient client = new HttpClient();
     private static readonly string _baseUrl = "http://data.fixer.io/api/latest"; //TODO: move to appsettings.json or use secrets.json
 
-    public async Task<ExchangeRate> GetExchangeRateAsync(string fromCurrency, string toCurrencies)
+    public async Task<ExchangeRateApiResponse> GetExchangeRateAsync(string fromCurrency, string toCurrencies)
     {
         string apiKey = "my_api_key"; // TODO: Replace with API key, store apiKey in secrets.json (use Secrets Manager)
         string url = $"{_baseUrl}?access_key={apiKey}&base={fromCurrency}&symbols={toCurrencies}";
@@ -18,16 +18,8 @@ public partial class ExchangeRateService : IExchangeRateService
             response.EnsureSuccessStatusCode();
             var responceString = await response.Content.ReadAsStringAsync();
             var exchangeData = JsonConvert.DeserializeObject<ExchangeRateApiResponse>(responceString);
-            if (exchangeData != null && exchangeData.Rates.TryGetValue(toCurrencies, out decimal value))
-            {
-                return new ExchangeRate
-                {
-                    CurrencyFrom = fromCurrency,
-                    CurrencyTo = toCurrencies,
-                    Rate = value,
-                    Timestamp = DateTime.Now
-                };
-            }
+            //TODO: check success
+            return exchangeData;
         }
         catch (Exception ex)
         {
